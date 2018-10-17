@@ -78,7 +78,7 @@ public long consultarMultaAlquiler(int iditem, Date fechaDevolucion) throws Pers
 @Override
 public void registrarAlquilerCliente(ItemRentado it) throws PersistenceException {
 	try{
-	      clienteMapper.registrarAlquilerCliente(it);
+	      clienteMapper.agregarItemRentadoACliente(it.getId(),it.getItem().getId(),it.getFechainiciorenta(),it.getFechafinrenta());
 	  }
 	  catch(org.apache.ibatis.exceptions.PersistenceException e){
 	      throw new PersistenceException("Error al consultar los clientes",e);

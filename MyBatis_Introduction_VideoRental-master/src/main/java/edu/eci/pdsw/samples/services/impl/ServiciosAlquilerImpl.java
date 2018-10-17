@@ -18,7 +18,6 @@ import edu.eci.pdsw.samples.services.ServiciosAlquiler;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
-
 @Singleton
 public class ServiciosAlquilerImpl implements ServiciosAlquiler {
 
@@ -103,7 +102,7 @@ public class ServiciosAlquilerImpl implements ServiciosAlquiler {
    @Override
    public TipoItem consultarTipoItem(int id) throws ExcepcionServiciosAlquiler {
 	   try{
-		   return tipoItemDAO.load(id);
+               return tipoItemDAO.load(id);
 	   }catch(PersistenceException ex) {
 		   throw new ExcepcionServiciosAlquiler("Error al consultar rl tipo item "+id,ex);
 	   }

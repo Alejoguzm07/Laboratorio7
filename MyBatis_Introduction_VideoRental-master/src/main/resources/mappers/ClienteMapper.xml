@@ -32,12 +32,40 @@
                     i.CLIENTES_documento=#{id}                    
 	</select>
         
+        <select id="consultarMultaAlquiler" resultType="java.lang.Long">
+		SELECT
+                    CASE WHEN DAY(#{fechaDevolucion})-DAY (fechafinrenta)>0 THEN 
+                    DAY(#{fechaDevolucion})-DAY (fechafinrenta) ELSE 0 END *tarifaxdia as multa
+                FROM  
+                    VI_ITEMS AS i,VI_ITEMRENTADO AS ir 
+                WHERE 
+                    (ir.ITEMS_id=#{iitem} AND ir.ITEMS_id=i.id );                 
+	</select>
+        
+        <insert id="agregarItemRentadoACliente">            
+            INSERT INTO VI_ITEMRENTADO (CLIENTES_documento,ITEMS_id,fechainiciorenta,fechafinrenta) VALUES (#{idcli},#{idit},#{fechaini},#{fechafin});
+        </insert>
+        
+        <insert id="insertarCliente">            
+            INSERT INTO VI_CLIENTES (documento,nombre,telefono,direccion,email,vetado) VALUES (#{cliente.documento},#{cliente.nombre},#{cliente.telefono},#{cliente.direccion},#{cliente.email},#{cliente.vetado});
+        </insert>
+        
+         <update id="vetarCliente">
+            UPDATE
+                VI_CLIENTES 
+            SET 
+                vetado = #{estado}
+            WHERE 
+                documento = #{id};
+        </update>
+        
 	<resultMap type='ItemRentado' id='ItemRentadoResult'>
             <id property='id' column='id'/>
             <result property='fechainiciorenta' column='fechainiciorenta'/>
             <result property='fechafinrenta' column='fechafinrenta'/>
             <association property="item" javaType="Item" resultMap='edu.eci.pdsw.sampleprj.dao.mybatis.mappers.ItemMapper.ItemResult'></association>          
 	</resultMap> 
+        
 	<resultMap type='Cliente' id='ClienteResult'>
 		<id property='documento' column='documento'/>
 		<result property='nombre' column='nombre'/>

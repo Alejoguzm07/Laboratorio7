@@ -33,9 +33,15 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import edu.eci.pdsw.sampleprj.dao.mybatis.mappers.ClienteMapper;
 import edu.eci.pdsw.sampleprj.dao.mybatis.mappers.ItemMapper;
+import edu.eci.pdsw.sampleprj.dao.mybatis.mappers.TipoItemMapper;
 import edu.eci.pdsw.samples.entities.Cliente;
 import edu.eci.pdsw.samples.entities.Item;
 import edu.eci.pdsw.samples.entities.TipoItem;
+import edu.eci.pdsw.samples.services.ExcepcionServiciosAlquiler;
+import edu.eci.pdsw.samples.services.ServiciosAlquiler;
+import edu.eci.pdsw.samples.services.ServiciosAlquilerFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -118,19 +124,180 @@ public class MyBatisExample {
         	}
         System.out.println();
         System.out.println(im.consultarItem(2138459))
-        System.out.println();*/
-        
+        System.out.println();
+        String string = "5818-04-20";
+         String string2 = "5818-04-28";
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = format.parse(string);
+        Date date2 = format.parse(string2);
+      
         ItemMapper im=sqlss.getMapper(ItemMapper.class);
-        ClienteMapper cm=sqlss.getMapper(ClienteMapper.class);        
+        ClienteMapper cm=sqlss.getMapper(ClienteMapper.class);
+        TipoItemMapper tim=sqlss.getMapper(TipoItemMapper.class);  
         System.out.println(cm.consultarCliente(12345));
-        System.err.println(".........................................................................................................");
+        System.out.println(".........................................................................................................");
         System.out.println(cm.consultarItemsRentados(12345));
-        System.err.println(".........................................................................................................");
+        System.out.println(".........................................................................................................");
         System.out.println(cm.consultarClientes());
-        System.err.println(".........................................................................................................");
+        System.out.println(".........................................................................................................");
         System.out.println(im.consultarItem(15));
-        System.err.println(".........................................................................................................");
+        System.out.println(".........................................................................................................");
+        System.out.println(im.consultarItemsDisponibles());
+        System.out.println(".........................................................................................................");
+        System.out.println(cm.consultarMultaAlquiler(1,date));
+        System.out.println(".........................................................................................................");
+        System.out.println(tim.getTipoItem(1));
+        System.out.println(".........................................................................................................");
+        System.out.println(tim.consultarTiposItem());
+        System.out.println(".........................................................................................................");
+        //cm.agregarItemRentadoACliente(12345, 2132219, date, date2);
+        Cliente cliente= new Cliente("yowis", 2138459, "3188478818", "P Sherman Calle Wallaby 42 Sidney", "yowis@mail.com"); 
+        //cm.insertarCliente(cliente);
+        System.out.println(".........................................................................................................");
+        System.out.println(im.consultarCostoAlquiler(1, 8));
+        System.out.println(".........................................................................................................");
+        TipoItem tipo= new TipoItem(3,"Juego");       
+        Item it=new Item(tipo,2138458,"itemSinTipo","no tengo tipo :C", date, 154555255, "holi soy un formato", "no definido");
+        //im.insertarItem(it);
+        cm.vetarCliente(2138459, true);
         
+        im.actualizarTarifaItem(15, 15000);*/
+        String string = "5818-04-20";
+        String string2 = "5818-04-28";
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = format.parse(string);
+        Date date2 = format.parse(string2);
+        TipoItem tipo= new TipoItem(3,"Juego");       
+        Item it=new Item(tipo,2138458,"itemSinTipo","no tengo tipo :C", date, 154555255, "holi soy un formato", "no definido");
+        Cliente cliente= new Cliente("yowis", 2138459, "3188478818", "P Sherman Calle Wallaby 42 Sidney", "yowis@mail.com");
+        
+        ServiciosAlquilerFactory alquiler = ServiciosAlquilerFactory.getInstance();
+        ServiciosAlquiler servicio = alquiler.getServiciosAlquiler();
+        System.out.println(".........................................................................................................");
+        System.out.println("valorMultaRetrasoxDia");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.valorMultaRetrasoxDia(15));
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarCliente");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarCliente(2138459));
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarItemsCliente");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarItemsCliente(2132219));
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarClientes");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarClientes());
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarItem");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarItem(15));
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarItemsDisponibles");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarItemsDisponibles());
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarMultaAlquiler");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarMultaAlquiler(1, (java.sql.Date) date));
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarTipoItem");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarTipoItem(1));
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarTiposItem");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarTiposItem());
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("registrarAlquilerCliente");
+        System.out.println(".........................................................................................................");
+        try {
+            servicio.actualizarTarifaItem(15, 0);
+            //servicio.registrarAlquilerCliente((java.sql.Date) date,2132219,it,8);
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("registrarCliente");
+        System.out.println(".........................................................................................................");
+        try {
+            servicio.actualizarTarifaItem(15, 0);
+            //servicio.registrarCliente(cliente);
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("consultarCostoAlquiler");
+        System.out.println(".........................................................................................................");
+        try {
+            System.out.println(servicio.consultarCostoAlquiler(1, 8));
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("actualizarTarifaItem");
+        System.out.println(".........................................................................................................");
+        try {
+            servicio.actualizarTarifaItem(15, 15000);
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("registrarItem");
+        System.out.println(".........................................................................................................");
+        try {
+            //servicio.registrarItem(it);
+            servicio.actualizarTarifaItem(15, 15000);
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
+        System.out.println("vetarCliente");
+        System.out.println(".........................................................................................................");
+        try {
+            //servicio.registrarItem(it);
+            servicio.vetarCliente(2138459, true);
+        } catch (ExcepcionServiciosAlquiler ex) {
+            System.err.println(ex.getMessage());
+        }
+        System.out.println(".........................................................................................................");
         sqlss.commit();   
         sqlss.close();
 

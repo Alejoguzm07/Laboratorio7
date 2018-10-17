@@ -21,7 +21,40 @@
                 WHERE 
                     i.TIPOITEM_id = ti.id AND i.id=#{id}	
 	</select>
+        
+        <select id="consultarItemsDisponibles" resultMap="ItemResult">
+		SELECT
+                    i.id
+                FROM  
+                    VI_ITEMS as i,VI_ITEMRENTADO as ir 
+                WHERE 
+                    (ir.ITEMS_id=i.id and CURRENT_DATE>ir.fechafinrenta) or (i.id not in (select id from VI_ITEMRENTADO))
+                GROUP BY i.id	
+	</select>
 
+        <select id="consultarCostoAlquiler" resultType="java.lang.Long">
+		SELECT
+                    tarifaxdia*#{numDias}
+                FROM 
+                    VI_ITEMS
+                WHERE 
+                    id=#{itemID};
+	</select>
+        
+        <update id="actualizarTarifaItem">
+            UPDATE
+                VI_ITEMS 
+            SET 
+                tarifaxdia = #{tarifa} 
+            WHERE 
+                id = #{itemID}
+        </update>
+        
+        <insert id="insertarItem">            
+            INSERT INTO VI_ITEMS (id,nombre,descripcion,fechalanzamiento,tarifaxdia,formatorenta,genero,TIPOITEM_id)
+            values (#{item.id},#{item.nombre},#{item.descripcion},#{item.fechaLanzamiento},#{item.tarifaxDia},#{item.formatoRenta},#{item.genero},#{item.tipo.id});
+        </insert>
+        
 	<resultMap type='Item' id='ItemResult'>
 		<id property='id' column='id'/>
 		<result property='nombre' column='nombre'/>

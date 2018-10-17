@@ -40,6 +40,6 @@ public interface ClienteMapper {
     public List<ItemRentado> consultarItemsRentados(@Param("id")long id);
     public long consultarMultaAlquiler(@Param("iitem")int iditem,@Param("fechaDevolucion") Date fechaDevolucion);
     public void registrarAlquilerCliente(@Param("itemRentado")ItemRentado it);
-	public void vetarCliente(@Param("id") long docu,@Param("estado") boolean estado);
+    public void vetarCliente(@Param("id") long docu,@Param("estado") boolean estado);
 	
 }
