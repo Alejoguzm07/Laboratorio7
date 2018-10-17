@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="edu.eci.pdsw.sampleprj.dao.mybatis.mappers.ClienteMapper">
+	
+	<select id="consultarCliente" parameterType="long" resultMap="ClienteResult">
+		SELECT 
+                    *
+		FROM 
+                    VI_CLIENTES AS c, VI_ITEMRENTADO as ir
+		WHERE 
+                    c.documento = ir.CLIENTES_documento AND c.documento=#{idcli}
+	</select>
+        
+        <select id="consultarClientes" resultMap="ClienteResult">
+		SELECT 
+                    *
+		FROM 
+                    VI_CLIENTES AS c, VI_ITEMRENTADO as ir
+		WHERE 
+                    c.documento = ir.CLIENTES_documento
+	</select>
+        
+	<select id="consultarItemsRentados" parameterType="long" resultMap="ItemRentadoResult">
+		SELECT
+                    *
+                FROM
+                    VI_ITEMRENTADO as i
+                WHERE 
+                    i.CLIENTES_documento=#{id}                    
+	</select>
+        
+	<resultMap type='ItemRentado' id='ItemRentadoResult'>
+            <id property='id' column='id'/>
+            <result property='fechainiciorenta' column='fechainiciorenta'/>
+            <result property='fechafinrenta' column='fechafinrenta'/>
+            <association property="item" javaType="Item" resultMap='edu.eci.pdsw.sampleprj.dao.mybatis.mappers.ItemMapper.ItemResult'></association>          
+	</resultMap> 
+	<resultMap type='Cliente' id='ClienteResult'>
+		<id property='documento' column='documento'/>
+		<result property='nombre' column='nombre'/>
+		<result property='telefono' column='telefono'/>
+		<result property='email' column='email'/> 
+		<result property='direccion' column='direccion'/>
+		<result property='vetado' column='vetado'/>      
+		<collection property='rentados' ofType='ItemRentado'  resultMap='ItemRentadoResult'></collection>
+	</resultMap>
+	
+</mapper>
